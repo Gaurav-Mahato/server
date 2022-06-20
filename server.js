@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import render from "xlsx";
-import pool from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js"
 
 const app = express();
 
@@ -10,6 +10,7 @@ const file = render.readFile("./TestData.xlsx")
 app.use(cors());
 app.use(express.json());
 
+app.use("/admin",authRoutes)
 
 app.get("/", (req,res) => {
     const sheets = file.SheetNames;
@@ -71,25 +72,6 @@ app.get("/", (req,res) => {
     }
 })
 
-app.post("/", (req,res) => {
-    pool.getConnection((err,conn) => {
-        if(err){
-            throw err;
-        }
-        else{
-            const {name, password,email} = req.body
-            const query = `INSERT INTO admin(name, password, email) VALUES(?, ?, ?)`
-            conn.query(query, [name,password,email],(error, result) => {
-                conn.release()
-                if(error){
-                    console.log(error)
-                }
-                console.log(result)
-            })
-        }
-    })
-    
-})
 
 app.listen(8080, (req,res) => {
     console.log("Server running at 8080")
