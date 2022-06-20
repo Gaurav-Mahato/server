@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import render from "xlsx";
+import pool from "./config/db.js";
 
 const app = express();
 
@@ -68,6 +69,26 @@ app.get("/", (req,res) => {
             dateValue: valueMaker('Billing Date')
         });
     }
+})
+
+app.post("/", (req,res) => {
+    pool.getConnection((err,conn) => {
+        if(err){
+            throw err;
+        }
+        else{
+            const {name, password,email} = req.body
+            const query = `INSERT INTO admin(name, password, email) VALUES(?, ?, ?)`
+            conn.query(query, [name,password,email],(error, result) => {
+                conn.release()
+                if(error){
+                    console.log(error)
+                }
+                console.log(result)
+            })
+        }
+    })
+    
 })
 
 app.listen(8080, (req,res) => {
