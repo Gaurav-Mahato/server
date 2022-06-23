@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import render from "xlsx";
-import authRoutes from "./routes/authRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js"
 
 const app = express();
 
@@ -10,7 +10,7 @@ const file = render.readFile("./TestData.xlsx")
 app.use(cors());
 app.use(express.json());
 
-app.use("/admin",authRoutes)
+app.use("/admin",adminRoutes)
 
 app.get("/", (req,res) => {
     const sheets = file.SheetNames;
