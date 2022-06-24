@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import render from "xlsx";
 import adminRoutes from "./routes/adminRoutes.js"
+import bodyParser from "body-parser";
 
 const app = express();
 
@@ -9,6 +10,10 @@ const file = render.readFile("./TestData.xlsx")
 
 app.use(cors());
 app.use(express.json());
+
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
 
 app.use("/admin",adminRoutes)
 

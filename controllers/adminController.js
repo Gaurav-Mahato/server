@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler"
 import bcrypt from "bcryptjs"
 import pool from "../config/db.js"
 import crypto from "crypto"
+import generateToken from "../utils/generateToken.js"
 
 const registerUser = asyncHandler(async(req,res) => {
     const salt = await bcrypt.genSalt(10)
@@ -53,7 +54,11 @@ const loginUser = asyncHandler(async(req,res) => {
                 else{
                     // const user = JSON.stringify(result[0])
                     const key = crypto.pbkdf2Sync(password,process.env.SALT, 20000,32,'sha256');
-                    const user = JSON.parse(JSON.stringify(result[0]))
+                    let user = JSON.parse(JSON.stringify(result[0]))
+                    user = {
+                        ...user,
+                        token: generateToken(user.admin_id)
+                    }
                     if((key.toString('hex') === user.password) && user){
                         res.send(user)
                     }
@@ -79,9 +84,13 @@ const updateZone = (req,res) => {
             conn.query(query, [zone], (error,result) => {
                 conn.release()
                 if(error){
-                    res.status(404).send(error)
+                    res.status(404)
+                }else{
+                    console.log(result)
+                    res.send({
+                       success: true
+                   })
                 }
-                
             })
         }
     })
