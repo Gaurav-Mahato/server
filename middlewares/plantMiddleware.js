@@ -1,7 +1,7 @@
 import pool from "../config/db.js"
 
 const getPlant = (req,res,next) => {
-    const {zone_access, branch_access, plant_access} = req.body
+    const {zone_access, branch_access, plant_access} = req.user
     pool.getConnection((err,conn) => {
         if(err){
             throw err
@@ -32,7 +32,6 @@ const getPlant = (req,res,next) => {
                         })
                     }
                     else{
-                        console.log(result)
                         req.plantDetails = result
                         next()
                     }

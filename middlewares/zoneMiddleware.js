@@ -2,7 +2,7 @@ import pool from "../config/db.js";
 import { arrayMaker, valueMaker } from "../utils/dataGenerator.js";
 
 const getZone = (req,res,next) => {
-    const {zone_access} = req.body
+    const {zone_access} = req.user
     pool.getConnection((err, conn) => {
         if(err){
             throw err

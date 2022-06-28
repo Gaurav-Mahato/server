@@ -3,9 +3,8 @@ import cors from "cors";
 import render from "xlsx";
 import adminRoutes from "./routes/adminRoutes.js"
 import bodyParser from "body-parser";
-import { arrayMaker, valueMaker } from "./utils/dataGenerator.js";
-import pool from "./config/db.js";
 import dataRoutes from "./routes/dataRoutes.js"
+import userRoutes from "./routes/userRoutes.js"
 
 const app = express();
 
@@ -20,6 +19,7 @@ app.use(bodyParser.urlencoded({
 
 app.use("/admin",adminRoutes)
 app.use("/data",dataRoutes)
+app.use("/user",userRoutes)
 
 
 

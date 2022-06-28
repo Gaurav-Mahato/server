@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import pool from "../config/db.js";
 
-const protect = asyncHandler(async(req,res,next) => {
+const protectUser = asyncHandler(async(req,res,next) => {
     let token;
     if(req.headers.authorization){
         try{
@@ -13,7 +13,7 @@ const protect = asyncHandler(async(req,res,next) => {
                     throw err
                 }
                 else{
-                    const query = `SELECT user_id,name,email FROM users WHERE user_id=?`
+                    const query = `SELECT zone_access,branch_access,plant_access FROM users WHERE user_id=?`
                     conn.query(query,[decoded.id], (error,result) => {
                         conn.release()
                         if(error){
@@ -22,6 +22,7 @@ const protect = asyncHandler(async(req,res,next) => {
                             })
                         }
                         else{
+                            req.user = result[0]
                             next()
                         }
                     })
@@ -39,4 +40,4 @@ const protect = asyncHandler(async(req,res,next) => {
     }
 })
 
-export default protect;
+export default protectUser;

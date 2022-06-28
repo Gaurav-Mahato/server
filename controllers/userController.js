@@ -3,23 +3,22 @@ import pool from "../config/db.js"
 import crypto from "crypto"
 import generateToken from "../utils/generateToken.js"
 
-const registerAdmin = asyncHandler(async(req,res) => {
-    const {name, password,email} = req.body
+const registerUser = asyncHandler(async(req,res) => {
+    const {name, password,email,role,zone_access, branch_access, plant_access} = req.body
     const key = crypto.pbkdf2Sync(password,process.env.SALT, 20000,32,'sha256');
     pool.getConnection((err,conn) => {
         if(err){
             throw err;
         }
         else{
-            const query = `INSERT INTO admin(name, password, email) VALUES(?, ?, ?)`
-            conn.query(query, [name,key.toString('hex'),email],(error, result) => {
+            const query = `INSERT INTO users(name, password, email,role,zone_access,branch_access,plant_access) VALUES(?, ?, ?, ?, ?, ?, ?)`
+            conn.query(query, [name,key.toString('hex'),email,role,zone_access,branch_access,plant_access],(error, result) => {
                 conn.release()
                 if(error){
                     console.log(error)
                 }
-                console.log(result)
             })
-            const get = `SELECT * FROM admin WHERE email=?`
+            const get = `SELECT * FROM users WHERE email=?`
             conn.query(get,[email],(err,result) => {
                 conn.release()
                 if(err){
@@ -32,14 +31,14 @@ const registerAdmin = asyncHandler(async(req,res) => {
     })
 })
 
-const loginAdmin = asyncHandler(async(req,res) => {
+const loginUser = asyncHandler(async(req,res) => {
     const {email, password} = req.body
     pool.getConnection((err,conn) => {
         if(err){
             throw err
         }
         else{
-            const query = `SELECT * FROM admin WHERE email=?`
+            const query = `SELECT * FROM users WHERE email=?`
             conn.query(query, [email], (error, result) => {
                 conn.release()
                 if(error){
@@ -50,12 +49,14 @@ const loginAdmin = asyncHandler(async(req,res) => {
                 else{
                     const key = crypto.pbkdf2Sync(password,process.env.SALT, 20000,32,'sha256');
                     let user = JSON.parse(JSON.stringify(result[0]))
-                    user = {
-                        ...user,
-                        token: generateToken(user.admin_id)
+                    const newUser = {
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        token: generateToken(user.user_id)
                     }
                     if((key.toString('hex') === user.password) && user){
-                        res.send(user)
+                        res.send(newUser)
                     }
                     else{
                         res.status(401).send({
@@ -68,27 +69,4 @@ const loginAdmin = asyncHandler(async(req,res) => {
     })
 })
 
-const updateZone = (req,res) => {
-    const {zone} = req.body
-    pool.getConnection((err,conn) => {
-        if(err){
-            res.status(404).send(err)
-        }
-        else{
-            const query = `INSERT INTO zone(name) VALUES(?)`
-            conn.query(query, [zone], (error,result) => {
-                conn.release()
-                if(error){
-                    res.status(404)
-                }else{
-                    console.log(result)
-                    res.send({
-                       success: true
-                   })
-                }
-            })
-        }
-    })
-}
-
-export {registerAdmin,updateZone,loginAdmin}
+export {registerUser, loginUser}

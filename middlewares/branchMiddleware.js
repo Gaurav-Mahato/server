@@ -1,7 +1,7 @@
 import pool from "../config/db.js";
 
 const getBranch = (req,res,next) => {
-    const {branch_access, zone_access, plant_access} = req.body
+    const {branch_access, zone_access, plant_access} = req.user
     const {zoneDetails} = req
     pool.getConnection((err,conn) => {
         if(err){
@@ -24,7 +24,6 @@ const getBranch = (req,res,next) => {
                     else{
                         const sendingData = JSON.parse(JSON.stringify(result))
                         req.branchDetails = sendingData
-                        console.log(sendingData)
                         next()
                     }
                 })
