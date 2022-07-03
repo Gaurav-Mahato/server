@@ -3,10 +3,9 @@ import asyncHandler from "express-async-handler";
 import pool from "../config/db.js";
 
 const protectUser = asyncHandler(async(req,res,next) => {
-    let token;
     if(req.headers.authorization){
         try{
-            token = req.headers.authorization
+            let token = req.headers.authorization
             const decoded = jwt.verify(token,process.env.SECRET)
             pool.getConnection((err,conn) => {
                 if(err){

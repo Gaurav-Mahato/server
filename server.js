@@ -51,27 +51,27 @@ app.use("/user",userRoutes)
 //                });  
 //             }  
 //         const zone = usingFilter(sendingData.map(data => data.Zone))
-        // const arrayMaker = (str) => {
-        //     let arr = []
-        //     Object.keys(sendingData).forEach(key => {
-        //       arr.push(sendingData[key][str])
-        //     })
-        //     return usingFilter(arr)
-        // }
-        // const valueMaker = (str) => {
-        //     const s = []
-        //     for(let i=0;i<arrayMaker(str).length;i++){
-        //         let qt = []
-        //         Object.keys(sendingData).forEach(key => {
-        //             if(sendingData[key][str] === arrayMaker(str)[i]){
-        //                 qt.push(sendingData[key]['Billed Quantity'])
-        //             }
-        //         })
-        //         const sumEntry = qt.reduce((acc, curr) => acc + curr)
-        //         s.push(sumEntry)
-        //     }
-        //     return s;
-        // }
+//         const arrayMaker = (str) => {
+//             let arr = []
+//             Object.keys(sendingData).forEach(key => {
+//               arr.push(sendingData[key][str])
+//             })
+//             return usingFilter(arr)
+//         }
+//         const valueMaker = (str) => {
+//             const s = []
+//             for(let i=0;i<arrayMaker(str).length;i++){
+//                 let qt = []
+//                 Object.keys(sendingData).forEach(key => {
+//                     if(sendingData[key][str] === arrayMaker(str)[i]){
+//                         qt.push(sendingData[key]['Billed Quantity'])
+//                     }
+//                 })
+//                 const sumEntry = qt.reduce((acc, curr) => acc + curr)
+//                 s.push(sumEntry)
+//             }
+//             return s;
+//         }
 //         res.send({
 //             zoneValue: valueMaker(sendingData,'Zone'), 
 //             materialValue: valueMaker(sendingData,'Material Number'),
@@ -84,6 +84,6 @@ app.use("/user",userRoutes)
 // })
 
 
-app.listen(8080, (req,res) => {
+app.listen(8080, () => {
     console.log("Server running at 8080")
 })

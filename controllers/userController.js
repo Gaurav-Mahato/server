@@ -50,6 +50,7 @@ const loginUser = asyncHandler(async(req,res) => {
                     const key = crypto.pbkdf2Sync(password,process.env.SALT, 20000,32,'sha256');
                     let user = JSON.parse(JSON.stringify(result[0]))
                     const newUser = {
+                        id: user.user_id,
                         name: user.name,
                         email: user.email,
                         role: user.role,
