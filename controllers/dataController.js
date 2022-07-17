@@ -10,7 +10,6 @@ const sendData = (req,res) => {
 }
 
 const zoneGetter = (req,res) => {
-    console.log(req.body.zone_name)
     pool.getConnection((err,conn) => {
         if(err){
             throw err
@@ -73,4 +72,46 @@ const plantGetter = (req,res) => {
     })
 }
 
-export {sendData,zoneGetter,branchGetter,plantGetter}
+const getZones = (req,res) => {
+    pool.getConnection((err,conn) => {
+        if(err){
+            throw err
+        }
+        else{
+            const query = `SELECT * FROM zone`
+            conn.query(query, (error, result) => {
+                if(error){
+                    res.status(404).send({
+                        message: "Unable to extract data"
+                    })
+                }
+                else{
+                    res.send(result)
+                }
+            })
+        }
+    })
+}
+
+const getBranches = (req,res) => {
+    const zone = req.params.zone
+    pool.getConnection((err,conn) => {
+        if(err){
+            throw err
+        }
+        else{
+            const query = `SELECT * FROM branch WHERE Zone=?`
+            conn.query(query,[zone] ,(error, result) => {
+                if(error){
+                    res.status(404).send({
+                        message: "Unable to extract data"
+                    })
+                }
+                else{
+                    res.send(result)
+                }
+            })
+        }
+    })
+}
+export {sendData,zoneGetter,branchGetter,plantGetter,getZones,getBranches}

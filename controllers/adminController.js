@@ -91,4 +91,53 @@ const updateZone = (req,res) => {
     })
 }
 
-export {registerAdmin,updateZone,loginAdmin}
+const updateBranch = (req,res) => {
+    const {branch,zone} = req.body
+    pool.getConnection((err,conn) => {
+        if(err){
+            throw err
+        }else{
+            const query = `INSERT INTO branch(name,zone) VALUES(?,?)`
+            conn.query(query, [branch,zone], (error, result) => {
+                conn.release()
+                if(error){
+                    res.status(404).send({
+                        message: 'Not able to add branch'
+                    })
+                }
+                else{
+                    res.send({
+                        success: true
+                    })
+                }
+            })
+        }
+    })
+}
+
+const updatePlant = (req,res) => {
+    const {plant, branch} = req.body
+    pool.getConnection((err,conn) => {
+        if(err){
+            throw err
+        }
+        else{
+            const query = `INSERT INTO plant(name, branch) VALUES(?,?)`
+            conn.query(query,[plant,branch],(error,result) => {
+                conn.release()
+                if(error){
+                    res.status(400).send({
+                        message: 'Not able to add plant'
+                    })
+                }
+                else{
+                    res.send({
+                        success: true
+                    })
+                }
+            })
+        }
+    })
+}
+
+export {registerAdmin,updateZone,loginAdmin, updateBranch,updatePlant}
