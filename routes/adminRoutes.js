@@ -7,6 +7,6 @@ router.route("/register").post(registerAdmin)
 router.route("/update").post(protect,updateZone)
 router.route("/login").post(loginAdmin)
 router.route('/update/branch').post(protect, updateBranch)
-router.route('/update/plant').post( updatePlant)
+router.route('/update/plant').post(protect, updatePlant)
 
 export default router
