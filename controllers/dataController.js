@@ -114,4 +114,46 @@ const getBranches = (req,res) => {
         }
     })
 }
-export {sendData,zoneGetter,branchGetter,plantGetter,getZones,getBranches}
+
+const getAllBranches = (req,res) => {
+    pool.getConnection((err,conn) => {
+        if(err){
+            throw err
+        }
+        else{
+            const query = `SELECT * FROM branch`
+            conn.query(query, (error, result) => {
+                if(error){
+                    res.status(404).send({
+                        message: "Unable to extract data"
+                    })
+                }
+                else{
+                    res.send(result)
+                }
+            })
+        }
+    })
+}
+
+const getAllPlants = (req,res) => {
+    pool.getConnection((err,conn) => {
+        if(err){
+            throw err
+        }
+        else{
+            const query = `SELECT * FROM plant`
+            conn.query(query, (error, result) => {
+                if(error){
+                    res.status(404).send({
+                        message: "Unable to extract data"
+                    })
+                }
+                else{
+                    res.send(result)
+                }
+            })
+        }
+    })
+}
+export {sendData,zoneGetter,branchGetter,plantGetter,getZones,getBranches, getAllBranches, getAllPlants}
