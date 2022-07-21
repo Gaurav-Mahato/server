@@ -156,4 +156,24 @@ const getAllPlants = (req,res) => {
         }
     })
 }
-export {sendData,zoneGetter,branchGetter,plantGetter,getZones,getBranches, getAllBranches, getAllPlants}
+
+const getDummy = (req,res) => {
+    pool.getConnection((err,conn) => {
+        if(err){
+            throw err
+        }
+        else{
+            const query = `SELECT * FROM dummy`
+            conn.query(query, (error, result) => {
+                if(error){
+                    res.status(404).send({
+                        message: "Data not found"
+                    })
+                }else{
+                    res.send(JSON.parse(JSON.stringify(result)))
+                }
+            })
+        }
+    })
+}
+export {sendData,zoneGetter,branchGetter,plantGetter,getZones,getBranches, getAllBranches, getAllPlants,getDummy}
