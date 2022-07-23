@@ -24,7 +24,9 @@ const registerUser = asyncHandler(async(req,res) => {
                 if(err){
                     res.status(400).send(err)
                 }else{
-                    res.send(JSON.stringify(result[0]))
+                    res.send({
+                        message: "User registered successfully"
+                    })
                 }
             })
         }
