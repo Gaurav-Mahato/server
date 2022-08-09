@@ -20,6 +20,7 @@ const getPlant = (req,res,next) => {
                         req.plantDetails = result
                         next()
                     }
+                    conn.release()
                 })
             }
             else if(branch_access>0){ // branch official
@@ -35,6 +36,7 @@ const getPlant = (req,res,next) => {
                         req.plantDetails = result
                         next()
                     }
+                    conn.release()
                 })
             }
             else if(zone_access>0){ // zone official
@@ -55,6 +57,7 @@ const getPlant = (req,res,next) => {
                         req.plantDetails = result
                         next()
                     }
+                    conn.release()
                 })
             } 
             else if(zone_access === 0){ // Head office
@@ -68,6 +71,7 @@ const getPlant = (req,res,next) => {
                         req.plantDetails = result
                         next()
                     }
+                    conn.release()
                 })
             }
         }

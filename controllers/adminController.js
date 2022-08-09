@@ -13,7 +13,7 @@ const registerAdmin = asyncHandler(async(req,res) => {
         else{
             const query = `INSERT INTO admin(name, password, email) VALUES(?, ?, ?)`
             conn.query(query, [name,key.toString('hex'),email],(error, result) => {
-                conn.release()
+                // conn.release()
                 if(error){
                     console.log(error)
                 }
@@ -21,7 +21,7 @@ const registerAdmin = asyncHandler(async(req,res) => {
             })
             const get = `SELECT * FROM admin WHERE email=?`
             conn.query(get,[email],(err,result) => {
-                conn.release()
+                // conn.release()
                 if(err){
                     res.status(400).send(err)
                 }else{
@@ -41,7 +41,7 @@ const loginAdmin = asyncHandler(async(req,res) => {
         else{
             const query = `SELECT * FROM admin WHERE email=?`
             conn.query(query, [email], (error, result) => {
-                conn.release()
+                // conn.release()
                 if(error){
                     res.status(404).send({
                         message: 'User not found'
@@ -77,7 +77,7 @@ const updateZone = (req,res) => {
         else{
             const query = `INSERT INTO zone(name) VALUES(?)`
             conn.query(query, [zone], (error,result) => {
-                conn.release()
+                // conn.release()
                 if(error){
                     res.status(404)
                 }else{
@@ -99,7 +99,7 @@ const updateBranch = (req,res) => {
         }else{
             const query = `INSERT INTO branch(name,zone) VALUES(?,?)`
             conn.query(query, [branch,zone], (error, result) => {
-                conn.release()
+                // conn.release()
                 if(error){
                     res.status(404).send({
                         message: 'Not able to add branch'
@@ -124,7 +124,7 @@ const updatePlant = (req,res) => {
         else{
             const query = `INSERT INTO plant(name, branch) VALUES(?,?)`
             conn.query(query,[plant,branch],(error,result) => {
-                conn.release()
+                // conn.release()
                 if(error){
                     res.status(400).send({
                         message: 'Not able to add plant'

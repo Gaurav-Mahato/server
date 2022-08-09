@@ -15,7 +15,6 @@ const getBranch = (req,res,next) => {
             else if(zone_access > 0){ // zone official
                 const query = `SELECT * from branch where zone=?`
                 conn.query(query,[zone_access],(error,result) => {
-                    conn.release()
                     if(error){
                         res.status(404).send({
                             message: error
@@ -26,6 +25,7 @@ const getBranch = (req,res,next) => {
                         req.branchDetails = sendingData
                         next()
                     }
+                    conn.release()
                 })
             }
             else if(zone_access === 0){ // Head office
@@ -41,6 +41,7 @@ const getBranch = (req,res,next) => {
                         req.branchDetails = result
                         next()
                     }
+                    conn.release()
                 })
             }
             else if(branch_access>0){  //Branch Official
@@ -54,6 +55,7 @@ const getBranch = (req,res,next) => {
                         req.branchDetails = result
                         next()
                     }
+                    conn.release()
                 })
             }
         }

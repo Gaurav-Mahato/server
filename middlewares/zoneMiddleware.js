@@ -11,7 +11,6 @@ const getZone = (req,res,next) => {
             if (zone_access>0){ // Zone official
                 const query = `SELECT * FROM zone WHERE zone_id=?`
                 conn.query(query,[zone_access],(error, result) => {
-                    conn.release()
                     if(error){
                         res.status(404).send({error}) 
                     }
@@ -20,6 +19,7 @@ const getZone = (req,res,next) => {
                         req.zoneDetails = sendingData
                         next()
                     }
+                    conn.release()
                 })
             }
             else if(zone_access === -1){ // Lower than zone
@@ -29,7 +29,6 @@ const getZone = (req,res,next) => {
             else if(zone_access === 0){ // Head office
                 const query = `SELECT * FROM zone`
                 conn.query(query,(error, result) => {
-                    conn.release()
                     if(error){
                         res.status(404).send({error}) 
                     }
@@ -38,6 +37,7 @@ const getZone = (req,res,next) => {
                         req.zoneDetails = sendingData
                         next()
                     }
+                    conn.release()
                 })
             } 
         }

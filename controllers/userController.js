@@ -11,24 +11,35 @@ const registerUser = asyncHandler(async(req,res) => {
             throw err;
         }
         else{
-            const query = `INSERT INTO users(name, password, email,role,zone_access,branch_access,plant_access) VALUES(?, ?, ?, ?, ?, ?, ?)`
-            conn.query(query, [name,key.toString('hex'),email,role,zone_access,branch_access,plant_access],(error, result) => {
-                conn.release()
-                if(error){
-                    console.log(error)
-                }
-            })
             const get = `SELECT * FROM users WHERE email=?`
             conn.query(get,[email],(err,result) => {
-                conn.release()
                 if(err){
                     res.status(400).send(err)
                 }else{
-                    res.send({
-                        message: "User registered successfully"
-                    })
+                    // res.send({
+                    //     message: "User registered successfully"
+                    // })
+                    if(result.length > 0){
+                        res.status(401).send({
+                            message: "User has already registered"
+                        })
+                    }else{
+                        const query = `INSERT INTO users(name, password, email,role,zone_access,branch_access,plant_access) VALUES(?, ?, ?, ?, ?, ?, ?)`
+                        conn.query(query, [name,key.toString('hex'),email,role,zone_access,branch_access,plant_access],(error, result) => {
+                            if(error){
+                                res.status(401).send(error)     
+                            }else{
+                                res.send({
+                                    message: "User registered successfully"
+                                })
+                            }
+                            conn.release()
+                        })
+                    }
+                    conn.release()
                 }
             })
+            
         }
     })
 })
@@ -42,7 +53,7 @@ const loginUser = asyncHandler(async(req,res) => {
         else{
             const query = `SELECT * FROM users WHERE email=?`
             conn.query(query, [email], (error, result) => {
-                conn.release()
+                
                 if(error){
                     res.status(404).send({
                         message: 'User not found'
@@ -66,6 +77,7 @@ const loginUser = asyncHandler(async(req,res) => {
                             message: 'Password Incorrect'
                         })
                     }
+                    conn.release()
                 }    
             })
         }

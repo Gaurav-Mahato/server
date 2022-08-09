@@ -25,6 +25,7 @@ const zoneGetter = (req,res) => {
                 else{
                     res.send(result)
                 }
+                conn.release()
             })
         }
     })
@@ -46,6 +47,7 @@ const branchGetter = (req,res) => {
                 else{
                     res.send(result)
                 }
+                conn.release()
             })
         }
     })
@@ -67,6 +69,7 @@ const plantGetter = (req,res) => {
                 else{
                     res.send(result)
                 }
+                conn.release()
             })
         }
     })
@@ -88,6 +91,7 @@ const getZones = (req,res) => {
                 else{
                     res.send(result)
                 }
+                conn.release()
             })
         }
     })
@@ -110,6 +114,7 @@ const getBranches = (req,res) => {
                 else{
                     res.send(result)
                 }
+                conn.release()
             })
         }
     })
@@ -131,6 +136,7 @@ const getAllBranches = (req,res) => {
                 else{
                     res.send(result)
                 }
+                conn.release()
             })
         }
     })
@@ -152,6 +158,7 @@ const getAllPlants = (req,res) => {
                 else{
                     res.send(result)
                 }
+                conn.release()
             })
         }
     })
@@ -172,6 +179,7 @@ const getDummy = (req,res) => {
                 }else{
                     res.send(JSON.parse(JSON.stringify(result)))
                 }
+                conn.release()
             })
         }
     })
